@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Cli.Test", "TodoApp.Cli.Test\TodoApp.Cli.Test.csproj", "{6D220F9D-262A-4CA2-99B4-F33A3241DF22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Cli.Tests", "TodoApp.Cli.Tests\TodoApp.Cli.Tests.csproj", "{6D220F9D-262A-4CA2-99B4-F33A3241DF22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Cli", "TodoApp.Cli\TodoApp.Cli.csproj", "{AB7D3B56-C8D8-4CAF-93C5-018CE9DD1CAA}"
 EndProject

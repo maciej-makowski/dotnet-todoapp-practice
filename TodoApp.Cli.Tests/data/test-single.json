@@ -1,0 +1,10 @@
+{
+  "tasks": [
+    {
+      "itemType": "single",
+      "insertedAt": "2020-07-11T14:00Z",
+      "title": "I'm a single item",
+      "completed": false
+    }
+  ]
+}
