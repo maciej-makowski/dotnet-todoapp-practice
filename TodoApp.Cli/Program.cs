@@ -11,9 +11,9 @@ namespace TodoApp.Cli
     {
         public static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<ListOptions>(args)
+            Parser.Default.ParseArguments<ListOptions, AddOptions>(args)
                 .WithParsed<ListOptions>(o => List(o).Wait())
-                .WithNotParsed(err => Fail(err));
+                .WithNotParsed(_ => Environment.Exit(-1));
         }
 
         public static async Task List(ListOptions options)
@@ -22,18 +22,6 @@ namespace TodoApp.Cli
             var list = await loader.LoadFromFile(options.Source);
 
             Console.WriteLine($"Loaded {list.Tasks.Count} items from {options.Source}");
-        }
-
-        public static void Fail(IEnumerable<Error> errors)
-        {
-            Console.WriteLine("Failed to run application");
-            var errorsToDisplay = JsonSerializer.Serialize(errors, new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
-
-            Console.WriteLine(errorsToDisplay);
-            Environment.Exit(-1);
         }
     }
 }
