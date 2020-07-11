@@ -1,0 +1,47 @@
+{
+  "tasks": [
+    {
+      "itemType": "task-single",
+      "insertedAt": "2020-07-11T14:00Z",
+      "title": "Make laundry",
+      "completed": false
+    },
+    {
+      "itemType": "task-list",
+      "insertedAt": "2020-07-11T14:00Z",
+      "title": "Create awesome app",
+      "items": [
+        {
+          "itemType": "task-single",
+          "insertedAt": "2020-07-11T14:00Z",
+          "title": "Setup repository",
+          "completed": false
+        },
+        {
+          "itemType": "task-single",
+          "insertedAt": "2020-07-11T14:00Z",
+          "title": "Setup C# project",
+          "completed": false
+        },
+        {
+          "itemType": "task-single",
+          "insertedAt": "2020-07-11T14:00Z",
+          "title": "Setup basic console application",
+          "completed": false
+        },
+        {
+          "itemType": "task-single",
+          "insertedAt": "2020-07-11T14:00Z",
+          "title": "Setup tests",
+          "completed": false
+        },
+        {
+          "itemType": "task-single",
+          "insertedAt": "2020-07-11T14:00Z",
+          "title": "Setup CI/CD",
+          "completed": false
+        }
+      ]
+    }
+  ]
+}
