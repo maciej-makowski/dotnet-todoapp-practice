@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\TodoApp.Cli",
+    "\\TodoApp.Cli.Tests",
+    "\\TodoApp.Cli\\Model"
+  ],
+  "SelectedNode": "\\TodoApp.Cli\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}

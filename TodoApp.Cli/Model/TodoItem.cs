@@ -14,5 +14,6 @@ namespace TodoApp.Cli.Model
         public bool Completed { get; set; }
 
         public IList<TodoItem> Items { get; set; }
+
     }
 }
