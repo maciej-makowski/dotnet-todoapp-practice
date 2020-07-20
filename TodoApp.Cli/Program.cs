@@ -25,10 +25,10 @@ namespace TodoApp.Cli
 
             Console.WriteLine($"Loaded {list.Tasks.Count} items from {options.Source}");
 
-            foreach(TodoItem td in list.Tasks)
-            {
-                Console.WriteLine(td.ToString());
-            }
+            //TEST//
+            list.Tasks[1].Items[1].Completed = true;
+
+            list.ShowAll();
 
         }
     }
