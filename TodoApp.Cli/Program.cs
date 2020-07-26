@@ -13,19 +13,10 @@ namespace TodoApp.Cli
     {
         public static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<ListOptions, AddOptions>(args)
-                .WithParsed<ListOptions>(o => List(o).Wait())
+            Parser.Default.ParseArguments<ListCommand, AddCommand>(args)
+                .WithParsed<ListCommand>(o => o.Run().Wait())
+                .WithParsed<AddCommand>(o => o.Run().Wait())
                 .WithNotParsed(_ => Environment.Exit(-1));
-        }
-
-        public static async Task List(ListOptions options)
-        {
-            var loader = new TodoJsonFileLoader();
-            var list = await loader.LoadFromFile(options.Source);
-
-            Console.WriteLine($"Loaded {list.Tasks.Count} items from {options.Source}");
-
-            list.ShowAll();
         }
     }
 }
