@@ -8,7 +8,7 @@ namespace TodoApp.Cli.Model
 
         public void ShowAll()
         {
-            foreach(TodoItem td in Tasks)
+            foreach (TodoItem td in Tasks)
             {
                 System.Console.WriteLine(td.ToString());
             }

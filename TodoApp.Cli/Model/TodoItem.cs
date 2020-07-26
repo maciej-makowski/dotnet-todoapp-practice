@@ -31,7 +31,7 @@ namespace TodoApp.Cli.Model
                 foreach (TodoItem td in Items)
                 {
                     sb.Append("\n -- " + td.ToString());
-                    if (td.Completed) t_countDone++;                
+                    if (td.Completed) t_countDone++;
                 }
 
                 t_isDone = t_countDone + "/" + Items.Count;
