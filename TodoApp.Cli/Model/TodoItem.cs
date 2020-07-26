@@ -20,27 +20,25 @@ namespace TodoApp.Cli.Model
         {
             StringBuilder sb = new StringBuilder();
 
-            var t_isDone = Completed ? "\u2713" : " ";
-            //var t_finished = this.Completed ? "finished" : "unfinished";
+            var isDone = Completed ? "x" : " ";
             var result = "";
 
             if (this.ItemType == TodoItemType.List)
             {
-                var t_countDone = 0;
+                var countDone = 0;
 
                 foreach (TodoItem td in Items)
                 {
                     sb.Append("\n -- " + td.ToString());
-                    if (td.Completed) t_countDone++;
+                    if (td.Completed) countDone++;
                 }
 
-                t_isDone = t_countDone + "/" + Items.Count;
-                result = "[" + t_isDone + "] " + this.Title + sb.ToString();
+                isDone = countDone + "/" + Items.Count;
+                result = "[" + isDone + "] " + this.Title + sb.ToString();
             }
             else
             {
-
-                result = "[" + t_isDone + "] " + this.Title; //+ " (I am a single, " + t_finished + " item.)";
+                result = "[" + isDone + "] " + this.Title;
             }
 
             return result;
