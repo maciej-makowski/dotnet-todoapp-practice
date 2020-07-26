@@ -10,10 +10,12 @@ namespace TodoApp.Cli.Commands
         [Option('d', "destination", HelpText = "Path to source file to load", Default = "./data/todo.json")]
         public string Source { get; set; }
         */
-
-        public async Task Run()
+        
+        /*public async Task Run()
         {
             // TODO ...
-        }
+            var loader = new TodoJsonFileLoader();
+            await loader.SaveToFile("", new Model.TodoList());
+        }*/
     }
 }
