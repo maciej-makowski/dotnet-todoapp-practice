@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "TodoApp.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "add -s data/todo.json",
+      "workingDirectory": "D:\\Repos\\todos\\dotnet-todoapp-practice"
+    }
+  }
+}

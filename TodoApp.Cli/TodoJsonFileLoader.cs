@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,6 +30,16 @@ namespace TodoApp.Cli
             using (var fileStream = File.OpenRead(path))
             {
                 return await JsonSerializer.DeserializeAsync<TodoList>(fileStream, options);
+            }
+        }
+
+        public async Task SaveToFile(string path, TodoList list)
+        {
+            if (list == null) throw new ArgumentNullException(nameof(list));
+
+            using (var fileStream = File.OpenWrite(path))
+            {
+                await JsonSerializer.SerializeAsync(fileStream, list);
             }
         }
     }

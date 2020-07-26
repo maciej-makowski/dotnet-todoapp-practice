@@ -27,13 +27,13 @@
           "itemType": "single",
           "insertedAt": "2020-07-11T14:00Z",
           "title": "Setup basic console application",
-          "completed": false
+          "completed": true
         },
         {
           "itemType": "single",
           "insertedAt": "2020-07-11T14:00Z",
           "title": "Setup tests",
-          "completed": false
+          "completed": true
         },
         {
           "itemType": "single",
