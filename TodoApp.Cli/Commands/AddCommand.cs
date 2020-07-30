@@ -17,13 +17,11 @@ namespace TodoApp.Cli.Commands
             tdList.Tasks = new List<TodoItem>();
             TodoItem td = new TodoItem();
             bool isRunning = true;
-
             while (isRunning) // MAIN LOOP 
             {
                 td = new TodoItem();
                 bool askForType = true;
                 var type = "";
-
                 while (askForType) // TYPE LOOP
                 {
                     Console.WriteLine("Single or list(s/l): ");
@@ -37,29 +35,24 @@ namespace TodoApp.Cli.Commands
                         askForType = false;
                     }
                 }
-
                 var title = "";
                 int subitemsAmount = 0;
                 bool askForAmount = true;
-                
                 if (type == "s") // SINGLE TODO
                 {
                     Console.WriteLine("Enter a title: ");
                     title = Console.ReadLine();
                     td.Title = title;
                     td.InsertedAt = DateTime.Now;
-
                 }
                 else // List TODO
                 {
                     Console.WriteLine("Enter a title: ");
                     title = Console.ReadLine();
-                    
                     while (askForAmount)
                     {
                         Console.WriteLine("How many subitems: ");
                         var input = Console.ReadLine();
-
                         if(Int32.TryParse(input, out subitemsAmount))
                         {
                             subitemsAmount = Int32.Parse(input);
@@ -70,32 +63,26 @@ namespace TodoApp.Cli.Commands
                             Console.WriteLine("Please provide a proper answer");
                         }
                     }
-
                     string[] titles = new string[subitemsAmount];
                     for (int i = 0; i<subitemsAmount; i++)
                     {
                         Console.WriteLine($"Enter a title for {i+1} subitem: ");
                         titles[i] = Console.ReadLine();
                     }
-
                     td.Title = title;
                     td.ItemType = TodoItemType.List;
                     td.InsertedAt = DateTime.Now;
                     td.Items = new List<TodoItem>();
-
                     foreach (string t in titles)
                     {
                         TodoItem todo = new TodoItem();
                         todo.Title = t;
                         todo.InsertedAt = DateTime.Now;
                         todo.ItemType = TodoItemType.Single;
-
-
                         td.Items.Add(todo);
                     }
                 }
                 tdList.Tasks.Add(td);
-                
                 var askForRestart = true;
                 while (askForRestart)
                 {
@@ -117,9 +104,7 @@ namespace TodoApp.Cli.Commands
                     }
                 }
             }
-
             tdList.ShowAll();
-            
             var loader = new TodoJsonFileLoader();
             await loader.SaveToFile(this.Path, tdList);
         }
