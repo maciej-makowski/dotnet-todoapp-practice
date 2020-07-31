@@ -24,7 +24,7 @@ namespace TodoApp.Cli.Commands
                 string todoTitle = ProvideTitle();
                 TodoItem todo = new TodoItem(todoTitle, isList);
 
-                if(isList)
+                if (isList)
                 {
                     subitemsAmount = ProvideAmount();
                     todo.Items = CreateListOfItems(subitemsAmount);

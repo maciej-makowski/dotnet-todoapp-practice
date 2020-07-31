@@ -45,7 +45,7 @@ namespace TodoApp.Cli.Model
             if (this.ItemType == TodoItemType.List)
             {
                 var countDone = 0;
-                
+
                 foreach (TodoItem td in Items)
                 {
                     sb.Append("\n -- " + td.ToString());
