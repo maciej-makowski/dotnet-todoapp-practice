@@ -16,6 +16,25 @@ namespace TodoApp.Cli.Model
 
         public IList<TodoItem> Items { get; set; }
 
+        public TodoItem(string title, bool isList)
+        {
+            this.Title = title;
+            InsertedAt = DateTime.Now;
+            if (isList)
+            {
+                this.Items = new List<TodoItem>();
+                this.ItemType = TodoItemType.List;
+            }
+            else
+            {
+                this.ItemType = TodoItemType.Single;
+
+            }
+        }
+        public TodoItem()
+        {
+            InsertedAt = DateTime.Now;
+        }
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

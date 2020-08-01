@@ -15,7 +15,7 @@ namespace TodoApp.Cli
         {
             Parser.Default.ParseArguments<ListCommand, AddCommand>(args)
                 .WithParsed<ListCommand>(o => o.Run().Wait())
-                //.WithParsed<AddCommand>(o => o.Run().Wait())
+                .WithParsed<AddCommand>(o => o.Run().Wait())
                 .WithNotParsed(_ => Environment.Exit(-1));
         }
     }
