@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +8,20 @@ namespace TodoApp.Cli.Model
     public class ListTodoItem : TodoItem
     {
         public IList<SingleTodoItem> Items { get; set; }
-
         public override TodoItemType ItemType => TodoItemType.List;
+
+        public ListTodoItem()
+        {
+            this.Items = new List<SingleTodoItem>();
+        }
+
+        public override void MarkCompleted()
+        {
+            foreach (var item in Items)
+            {
+                item.Completed = true;
+            }
+        }
 
         public override string ToString()
         {
@@ -32,7 +45,7 @@ namespace TodoApp.Cli.Model
             }
 
             var isDone = Completed ? "x" : " ";
-            output.Insert(0, $"[{completedSubitems}/{Items.Count}] {Title}\n");
+            output.Insert(0, $"[{completedSubitems}/{Items.Count}]  {Id} : {Title}\n");
 
             return output.ToString();
         }

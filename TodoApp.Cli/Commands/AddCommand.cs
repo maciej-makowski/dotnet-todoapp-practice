@@ -12,139 +12,142 @@ namespace TodoApp.Cli.Commands
     {
         [Option('d', "destination", HelpText = "Path to source file to load", Default = "./data/todo.json")]
         public string Path { get; set; }
-        public Task Run()
+        public async Task Run()
         {
-            return Task.CompletedTask;
-            //         TodoList todoList = new TodoList();
-            //         bool askForTodo = true;
+            TodoList todoList = new TodoList();
+            bool askForTodo = true;
 
-            //         while (askForTodo)
-            //         {
-            //             TodoItem newTodo;
-            //             if (ShouldCreateList())
-            //             {
-            //                 newTodo = new TodoItem()
-            //                 {
-            //                     Title = ProvideTitle(),
-            //                     ItemType = TodoItemType.List,
-            //                 };
-            //                 var subitemsAmount = ProvideAmount();
-            //                 newTodo.Items = CreateListOfItems(subitemsAmount);
-            //             }
-            //             else
-            //             {
-            //                 newTodo = new TodoItem()
-            //                 {
-            //                     Title = ProvideTitle(),
-            //                     ItemType = TodoItemType.Single
-            //                 };
-            //             }
-            //             todoList.Tasks.Add(newTodo);
-            //             askForTodo = AskForRestart();
-            //         }
-            //         var loader = new TodoJsonFileLoader();
-            //         await loader.SaveToFile(this.Path, todoList);
-            //     }
+            while (askForTodo)
+            {
 
-            //     private bool ShouldCreateList()
-            //     {
-            //         bool keepAsking = true;
-            //         bool isList = false;
+                if (ShouldCreateList())
+                {
+                    ListTodoItem newListTodo = new ListTodoItem()
+                    {
+                        Title = ProvideTitle()
+                    };
+                    var subitemsAmount = ProvideAmount();
 
-            //         while (keepAsking)
-            //         {
-            //             Console.WriteLine("Single or list(s/l): ");
-            //             var type = Console.ReadLine().ToLower();
+                    //newTodo.Items = new List<SingleTodoItem>();
 
-            //             if (type != "s" && type != "l")
-            //             {
-            //                 Console.WriteLine("Please provide a proper answer");
-            //             }
-            //             else
-            //             {
-            //                 keepAsking = false;
-            //                 isList = type == "l";
-            //             }
-            //         }
-            //         return isList;
-            //     }
-            //     private int ProvideAmount()
-            //     {
-            //         bool keepAsking = true;
-            //         var subitemsAmount = 0;
+                    newListTodo.Items = CreateListOfItems(subitemsAmount);
 
-            //         while (keepAsking)
-            //         {
-            //             Console.WriteLine("How many subitems: ");
-            //             var input = Console.ReadLine();
+                    todoList.Tasks.Add(newListTodo);
+                }
+                else
+                {
+                    SingleTodoItem newSingleTodo = new SingleTodoItem()
+                    {
+                        Title = ProvideTitle()
+                    };
+                    todoList.Tasks.Add(newSingleTodo);
+                }
 
-            //             if (Int32.TryParse(input, out subitemsAmount))
-            //             {
-            //                 subitemsAmount = Int32.Parse(input);
-            //                 keepAsking = false;
-            //             }
-            //             else
-            //             {
-            //                 Console.WriteLine("Please provide a proper answer");
-            //             }
-            //         }
+                Console.WriteLine("LIST SO FAR:\n");
+                todoList.ShowAll();
 
-            //         return subitemsAmount;
-            //     }
-            //     private bool AskForRestart()
-            //     {
-            //         var askForRestart = true;
-            //         bool restart = false;
+                askForTodo = AskForRestart();
+            }
 
-            //         while (askForRestart)
-            //         {
-            //             Console.WriteLine("Would you like to add another todo?(y/n)?");
-            //             var answer = Console.ReadLine().ToLower();
-            //             if (answer != "y" && answer != "n")
-            //             {
-            //                 Console.WriteLine("Please provide a proper answer");
-            //             }
-            //             else if (answer == "y")  // FIX WHITESPACING
-            //             {
-            //                 restart = true;
-            //                 askForRestart = false;
-            //             }
-            //             else
-            //             {
-            //                 askForRestart = false;
-            //                 Console.WriteLine("Thanks, bb!");
-            //             }
-            //         }
-            //         return restart;
-            //     }
-            //     private List<TodoItem> CreateListOfItems(int amount)
-            //     {
-            //         List<TodoItem> subitems = new List<TodoItem>();
+            var loader = new TodoNewtonsoftJsonLoader();
+            loader.SaveToFile(this.Path, todoList);
+        }
 
-            //         for (int i = 0; i < amount; i++)
-            //         {
-            //             Console.WriteLine($"Enter a title for {i + 1} subitem: ");
-            //             var title = Console.ReadLine();
-            //             /*var isList = provideType();
-            //             var amt = 0;*/
-            //             TodoItem subitem = new TodoItem(title, false);
-            //             /*if (isList)
-            //             {
-            //                 amt = provideAmount();
-            //                 subitem.Items = CreateListOfItems(amt);
-            //             }*/
-            //             subitems.Add(subitem);
-            //         }
-            //         return subitems;
-            //     }
-            //     private string ProvideTitle()
-            //     {
-            //         Console.WriteLine("Enter a title: ");
-            //         var title = Console.ReadLine();
+        private bool ShouldCreateList()
+        {
+            bool keepAsking = true;
+            bool isList = false;
 
-            //         return title;
-            //     }
-            // }
+            while (keepAsking)
+            {
+                Console.WriteLine("Single or list(s/l): ");
+                var type = Console.ReadLine().ToLower();
+
+                if (type != "s" && type != "l")
+                {
+                    Console.WriteLine("Please provide a proper answer");
+                }
+                else
+                {
+                    keepAsking = false;
+                    isList = type == "l";
+                }
+            }
+            return isList;
+        }
+        private int ProvideAmount()
+        {
+            bool keepAsking = true;
+            var subitemsAmount = 0;
+
+            while (keepAsking)
+            {
+                Console.WriteLine("How many subitems: ");
+                var input = Console.ReadLine();
+
+                if (Int32.TryParse(input, out subitemsAmount))
+                {
+                    subitemsAmount = Int32.Parse(input);
+                    keepAsking = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please provide a proper answer");
+                }
+            }
+
+            return subitemsAmount;
+        }
+        private bool AskForRestart()
+        {
+            var askForRestart = true;
+            bool restart = false;
+
+            while (askForRestart)
+            {
+                Console.WriteLine("Would you like to add another todo?(y/n)?");
+                var answer = Console.ReadLine().ToLower();
+                if (answer != "y" && answer != "n")
+                {
+                    Console.WriteLine("Please provide a proper answer");
+                }
+                else if (answer == "y")
+                {
+                    restart = true;
+                    askForRestart = false;
+                }
+                else
+                {
+                    askForRestart = false;
+                    Console.WriteLine("Thanks, bb!");
+                }
+            }
+            return restart;
+        }
+        private List<SingleTodoItem> CreateListOfItems(int amount)
+        {
+            List<SingleTodoItem> subitems = new List<SingleTodoItem>();
+
+            for (int i = 0; i < amount; i++)
+            {
+                Console.WriteLine($"Enter a title for {i + 1} subitem: ");
+                var title = Console.ReadLine();
+
+                SingleTodoItem subitem = new SingleTodoItem()
+                {
+                    Title = title
+                };
+
+                subitems.Add(subitem);
+            }
+            return subitems;
+        }
+        private string ProvideTitle()
+        {
+            Console.WriteLine("Enter a title: ");
+            var title = Console.ReadLine();
+
+            return title;
         }
     }
 }

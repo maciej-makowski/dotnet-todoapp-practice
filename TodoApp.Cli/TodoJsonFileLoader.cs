@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace TodoApp.Cli
 
             using (var fileStream = File.OpenWrite(path))
             {
-                await JsonSerializer.SerializeAsync(fileStream, list);
+                await JsonSerializer.SerializeAsync(fileStream, list, list.GetType());
             }
         }
     }

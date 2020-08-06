@@ -19,5 +19,46 @@ namespace TodoApp.Cli.Model
                 System.Console.WriteLine(td.ToString());
             }
         }
+
+        public void MarkCompleted(int Id)
+        {
+            bool taskFound = false;
+            foreach (var task in Tasks)
+            {
+                if(task is ListTodoItem)
+                {
+                    if (task.Id == Id)
+                    {
+                        task.MarkCompleted();
+                        break;
+                    }
+                    else
+                    {
+                        ListTodoItem ltd = (ListTodoItem)task;
+                        foreach (var item in ltd.Items)
+                        {
+                            if(item.Id == Id)
+                            {
+                                item.MarkCompleted();
+                                taskFound = true;
+                                break;
+                            }
+                        }
+                        if (taskFound == true)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    if(task.Id == Id)
+                    {
+                        task.MarkCompleted();
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
