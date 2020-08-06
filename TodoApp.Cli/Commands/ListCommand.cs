@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using System;
 using System.Threading.Tasks;
+using TodoApp.Cli.Repository;
 
 namespace TodoApp.Cli.Commands
 {
@@ -12,12 +13,15 @@ namespace TodoApp.Cli.Commands
 
         public async Task Run()
         {
-            var loader = new TodoJsonFileLoader();
-            var list = await loader.LoadFromFile(Source);
+            var repository = new TodoRepository();
 
-            Console.WriteLine($"Loaded {list.Tasks.Count} items from {Source}");
+            await repository.LoadItems(Source);
+            Console.WriteLine(repository.DisplayAllItems());
 
-            list.ShowAll();
+
+            //Console.WriteLine($"Loaded {list.Tasks.Count} items from {Source}");
+
+            //list.ShowAll();
         }
     }
 }
