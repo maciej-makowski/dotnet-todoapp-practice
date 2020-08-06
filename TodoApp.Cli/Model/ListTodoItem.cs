@@ -15,11 +15,12 @@ namespace TodoApp.Cli.Model
             this.Items = new List<SingleTodoItem>();
         }
 
-        public override void MarkCompleted()
+        public override void MarkCompleted(int id)
         {
+            bool markAll = Id == id;
             foreach (var item in Items)
             {
-                item.Completed = true;
+                if (item.Id == id || markAll) item.Completed = true;
             }
         }
 

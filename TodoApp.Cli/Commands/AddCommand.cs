@@ -19,7 +19,6 @@ namespace TodoApp.Cli.Commands
 
             while (askForTodo)
             {
-
                 if (ShouldCreateList())
                 {
                     ListTodoItem newListTodo = new ListTodoItem()
@@ -27,8 +26,6 @@ namespace TodoApp.Cli.Commands
                         Title = ProvideTitle()
                     };
                     var subitemsAmount = ProvideAmount();
-
-                    //newTodo.Items = new List<SingleTodoItem>();
 
                     newListTodo.Items = CreateListOfItems(subitemsAmount);
 

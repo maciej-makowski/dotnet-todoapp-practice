@@ -22,7 +22,6 @@ namespace TodoApp.Cli.Model
 
         public void MarkCompleted(int Id)
         {
-            bool taskFound = false;
             foreach (var task in Tasks)
             {
                 if(task is ListTodoItem)
@@ -40,13 +39,8 @@ namespace TodoApp.Cli.Model
                             if(item.Id == Id)
                             {
                                 item.MarkCompleted();
-                                taskFound = true;
-                                break;
+                                return;
                             }
-                        }
-                        if (taskFound == true)
-                        {
-                            break;
                         }
                     }
                 }

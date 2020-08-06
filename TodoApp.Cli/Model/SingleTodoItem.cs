@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace TodoApp.Cli.Model
 {
@@ -7,9 +8,9 @@ namespace TodoApp.Cli.Model
     {
         public override TodoItemType ItemType => TodoItemType.Single;
 
-        public override void MarkCompleted()
+        public override void MarkCompleted(int id)
         {
-            this.Completed = true;
+            if (Id == id) this.Completed = true;
         }
 
         public override string ToString()

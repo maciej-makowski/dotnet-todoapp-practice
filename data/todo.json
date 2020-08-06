@@ -75,7 +75,7 @@
               "Id": 9,
               "InsertedAt": "2020-08-06T18:53:43.0704247+02:00",
               "Title": "butt",
-              "Completed": false
+              "Completed": true
             },
             {
               "$type": "TodoApp.Cli.Model.SingleTodoItem, TodoApp.Cli",
