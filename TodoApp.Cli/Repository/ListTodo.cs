@@ -19,6 +19,24 @@ namespace TodoApp.Cli.Repository
             this.subitems = subitems;
         }
 
+        public void MarkCompleted(int id)
+        {
+            if(this.id == id)
+            {
+                foreach (var subitem in subitems)
+                {
+                    subitem.Completed = true;
+                }
+            }
+            else
+            {
+                foreach (var subitem in subitems)
+                {
+                    subitem.MarkCompleted(id);
+                }
+            }
+        }
+
         public void Display(StringBuilder sb)
         {
             var startPosition = sb.Length;
@@ -31,7 +49,7 @@ namespace TodoApp.Cli.Repository
                 subitem.Display(sb);
             }
 
-            sb.Insert(startPosition, $"[{countCompleted}/{subitems.Count}] {todo.Title}\n");
+            sb.Insert(startPosition, $"[{countCompleted}/{subitems.Count}] ({this.id}) {todo.Title}\n");
         }
 
     }

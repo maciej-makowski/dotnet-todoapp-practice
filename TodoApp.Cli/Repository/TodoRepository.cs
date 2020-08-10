@@ -28,6 +28,14 @@ namespace TodoApp.Cli.Repository
 
         }
 
+        public void MarkCompleted(int id)
+        {
+            foreach (var task in Tasks)
+            {
+                task.MarkCompleted(id);
+            }
+        }
+
         public string DisplayAllItems()
         {
             StringBuilder sb = new StringBuilder();

@@ -16,7 +16,36 @@ namespace TodoApp.Cli.Commands
             var repository = new TodoRepository();
 
             await repository.LoadItems(Source);
-            Console.WriteLine(repository.DisplayAllItems());
+
+
+            var provideId = true;
+            while (provideId)
+            {
+                Console.WriteLine(repository.DisplayAllItems());
+                Console.WriteLine("Provide the ID of item which is completed");
+                var isNumber = false;
+                while (!isNumber)
+                {
+                    var input = Console.ReadLine();
+                    var id = 0;
+                    if (Int32.TryParse(input, out id))
+                    {
+                        id = Int32.Parse(input);
+                        repository.MarkCompleted(id);
+                        isNumber = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Provide a proper number");
+                    }
+                }
+                Console.WriteLine("Would you like to continue marking todos?(y/n)");
+                var answer = Console.ReadLine().ToLower();
+                if(answer != "y")
+                {
+                    provideId = false;
+                }
+            }
 
 
             //Console.WriteLine($"Loaded {list.Tasks.Count} items from {Source}");

@@ -12,6 +12,7 @@ namespace TodoApp.Cli.Repository
         public bool Completed
         {
             get { return this.todo.Completed; }
+            set { this.todo.Completed = value; }
         }
 
         public SingleTodo(TodoItem todo, int id)
@@ -27,7 +28,7 @@ namespace TodoApp.Cli.Repository
 
         public void Display(StringBuilder sb)
         {
-            sb.Append($"{(todo.Completed ? "[x]" : "[ ]")} {todo.Title}\n");
+            sb.Append($"{(todo.Completed ? "[x]" : "[ ]")} ({this.id}) {todo.Title}\n");
         }
     }
 }
