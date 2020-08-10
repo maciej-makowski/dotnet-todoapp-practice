@@ -45,8 +45,14 @@ namespace TodoApp.Cli.Repository
             switch (item.ItemType)
             {
                 case TodoItemType.List:
-                    ListTodo listTodo = new ListTodo(item, NEXT_ID++);
-                    NEXT_ID += item.Items.Count;
+                    List<SingleTodo> subitems = new List<SingleTodo>();
+                    foreach (var subitem in item.Items)
+                    {
+                        SingleTodo singleSubitem = new SingleTodo(subitem, NEXT_ID++);
+                        subitems.Add(singleSubitem);
+                    }
+                    ListTodo listTodo = new ListTodo(item, subitems, NEXT_ID++);
+                    //NEXT_ID += item.Items.Count;
                     return listTodo;
                 case TodoItemType.Single:
                     SingleTodo singleTodo = new SingleTodo(item, NEXT_ID++);

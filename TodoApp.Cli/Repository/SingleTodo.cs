@@ -9,6 +9,10 @@ namespace TodoApp.Cli.Repository
     {
         private int id;
         private TodoItem todo;
+        public bool Completed
+        {
+            get { return this.todo.Completed; }
+        }
 
         public SingleTodo(TodoItem todo, int id)
         {

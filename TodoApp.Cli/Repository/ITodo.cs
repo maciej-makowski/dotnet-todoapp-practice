@@ -8,6 +8,5 @@ namespace TodoApp.Cli.Repository
     {
         void Display(StringBuilder sb);
 
-
     }
 }
