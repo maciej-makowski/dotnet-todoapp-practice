@@ -19,9 +19,14 @@ namespace TodoApp.Cli.Repository
             this.subitems = subitems;
         }
 
+        public TodoItem GetTodoItem()
+        {
+            return this.todo;
+        }
+
         public void MarkCompleted(int id)
         {
-            if(this.id == id)
+            if (this.id == id)
             {
                 foreach (var subitem in subitems)
                 {

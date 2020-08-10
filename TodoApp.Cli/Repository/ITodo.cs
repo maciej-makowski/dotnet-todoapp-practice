@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TodoApp.Cli.Model;
 
 namespace TodoApp.Cli.Repository
 {
@@ -9,5 +10,7 @@ namespace TodoApp.Cli.Repository
         void Display(StringBuilder sb);
 
         void MarkCompleted(int id);
+
+        TodoItem GetTodoItem();
     }
 }

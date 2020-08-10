@@ -21,6 +21,11 @@ namespace TodoApp.Cli.Repository
             this.id = id;
         }
 
+        public TodoItem GetTodoItem()
+        {
+            return this.todo;
+        }
+
         public void MarkCompleted(int id)
         {
             if (this.id == id) todo.Completed = true;

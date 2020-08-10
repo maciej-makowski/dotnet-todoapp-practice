@@ -41,7 +41,7 @@ namespace TodoApp.Cli.Commands
                 }
                 Console.WriteLine("Would you like to continue marking todos?(y/n)");
                 var answer = Console.ReadLine().ToLower();
-                if(answer != "y")
+                if (answer != "y")
                 {
                     provideId = false;
                 }

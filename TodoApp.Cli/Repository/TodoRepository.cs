@@ -23,9 +23,19 @@ namespace TodoApp.Cli.Repository
             }
         }
 
-        public void SaveItems()
+        public async Task SaveItems(string path)
         {
+            var loader = new TodoJsonFileLoader();
+            List<TodoItem> todoTasks = new List<TodoItem>();
 
+            foreach (var item in Tasks)
+            {
+                todoTasks.Add(CastAsTodoItem(item));
+            }
+
+            TodoList todoList = new TodoList();
+            todoList.Tasks = todoTasks;
+            await loader.SaveToFile(path, todoList);
         }
 
         public void MarkCompleted(int id)
@@ -70,5 +80,32 @@ namespace TodoApp.Cli.Repository
             }
         }
 
+        private static TodoItem CastAsTodoItem(ITodo item)
+        {
+            Type t = item.GetType();
+
+            if (t.Equals(typeof(SingleTodo)))
+            {
+                return item.GetTodoItem();
+            }
+            else if (t.Equals(typeof(ListTodo)))
+            {
+                return item.GetTodoItem();
+            }
+            else
+            {
+                throw new ApplicationException("Unrecognized item type: " + t);
+            }
+
+            //switch (t)
+            //{
+            //    case typeof(SingleTodo):
+            //        return new TodoItem();
+            //    case typeof(ListTodo):
+            //        return new TodoItem();
+            //    default:
+            //        throw new ApplicationException("Unrecognized item type: " + item.GetType());
+            //}
+        }
     }
 }
