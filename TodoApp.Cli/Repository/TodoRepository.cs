@@ -38,6 +38,15 @@ namespace TodoApp.Cli.Repository
             await loader.SaveToFile(path, todoList);
         }
 
+        public void AddTodos(TodoList list)
+        {
+            foreach (var item in list.Tasks)
+            {
+                var todoItem = CreateFromTodoItem(item);
+                Tasks.Add(todoItem);
+            }
+        }
+
         public void MarkCompleted(int id)
         {
             foreach (var task in Tasks)
@@ -70,7 +79,6 @@ namespace TodoApp.Cli.Repository
                         subitems.Add(singleSubitem);
                     }
                     ListTodo listTodo = new ListTodo(item, subitems, NEXT_ID++);
-                    //NEXT_ID += item.Items.Count;
                     return listTodo;
                 case TodoItemType.Single:
                     SingleTodo singleTodo = new SingleTodo(item, NEXT_ID++);
@@ -84,11 +92,7 @@ namespace TodoApp.Cli.Repository
         {
             Type t = item.GetType();
 
-            if (t.Equals(typeof(SingleTodo)))
-            {
-                return item.GetTodoItem();
-            }
-            else if (t.Equals(typeof(ListTodo)))
+            if (t.Equals(typeof(SingleTodo)) || t.Equals(typeof(ListTodo)))
             {
                 return item.GetTodoItem();
             }

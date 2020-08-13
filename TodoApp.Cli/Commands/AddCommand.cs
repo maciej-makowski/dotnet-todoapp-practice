@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TodoApp.Cli.Model;
+using TodoApp.Cli.Repository;
 
 namespace TodoApp.Cli.Commands
 {
@@ -14,28 +16,41 @@ namespace TodoApp.Cli.Commands
         public string Path { get; set; }
         public async Task Run()
         {
-            TodoList todoList = new TodoList();
-            bool askForTodo = true;
+            var repository = new TodoRepository();
+            var todoList = new TodoList();
+            var askForTodo = true;
 
             while (askForTodo)
             {
-                bool isList = ProvideType();
-                int subitemsAmount = 0;
-                string todoTitle = ProvideTitle();
-                TodoItem todo = new TodoItem(todoTitle, isList);
-
-                if (isList)
+                if (ShouldCreateList())
                 {
+                    int subitemsAmount = 0;
+                    var todo = new TodoItem()
+                    {
+                        Title = ProvideTitle(),
+                    };
                     subitemsAmount = ProvideAmount();
                     todo.Items = CreateListOfItems(subitemsAmount);
+                    todoList.Tasks.Add(todo);
+
                 }
-                todoList.Tasks.Add(todo);
+                else
+                {
+                    TodoItem todo = new TodoItem()
+                    {
+                        Title = ProvideTitle()
+                    };
+                    todoList.Tasks.Add(todo);
+                }
+                
                 askForTodo = AskForRestart();
             }
-            var loader = new TodoJsonFileLoader();
-            await loader.SaveToFile(this.Path, todoList);
+            await repository.LoadItems(Path);
+            repository.AddTodos(todoList);
+            repository.DisplayAllItems();
+            await repository.SaveItems(Path);
         }
-        private bool ProvideType()
+        private bool ShouldCreateList()
         {
             bool keepAsking = true;
             bool isList = false;

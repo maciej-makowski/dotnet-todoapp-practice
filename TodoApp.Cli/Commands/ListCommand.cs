@@ -47,6 +47,8 @@ namespace TodoApp.Cli.Commands
                 }
             }
 
+            await repository.SaveItems(Source);
+
 
             //Console.WriteLine($"Loaded {list.Tasks.Count} items from {Source}");
 
