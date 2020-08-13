@@ -70,7 +70,7 @@ namespace TodoApp.Cli.Tests.Repository
             var item = new SingleTodo(todo.Items[0], id++);
             List<SingleTodo> items = new List<SingleTodo>();
             items.Add(item);
-            
+
             var listItem = new ListTodo(todo, items, id++);
 
             listItem.Display(sb);

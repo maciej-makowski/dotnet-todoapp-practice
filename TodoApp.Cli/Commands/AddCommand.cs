@@ -42,7 +42,7 @@ namespace TodoApp.Cli.Commands
                     };
                     todoList.Tasks.Add(todo);
                 }
-                
+
                 askForTodo = AskForRestart();
             }
             await repository.LoadItems(Path);
