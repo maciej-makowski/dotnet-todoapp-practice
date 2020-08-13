@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Net.Mail;
 using System.Text;
 using TodoApp.Cli.Model;
 using TodoApp.Cli.Repository;
@@ -112,6 +113,28 @@ namespace TodoApp.Cli.Tests.Repository
             Assert.That(output, Is.EqualTo(
                 $"[1/1] ({--id}) {todo.Title}\n" +
                 $" -- [x] ({--id}) {todo.Items[0].Title}\n"));
+        }
+
+        [Test]
+        public void ShouldAddSingleItem()
+        {
+            var id = 0;
+            TodoItem item = new TodoItem()
+            {
+                ItemType = TodoItemType.Single,
+                Title = "Single item",
+                Completed = false
+            };
+            TodoList itemList = new TodoList();
+            itemList.Tasks.Add(item);
+
+            TodoRepository repository = new TodoRepository();
+
+            repository.AddTodos(itemList);
+
+            var output = repository.DisplayAllItems();
+
+            Assert.That(output, Is.EqualTo($"[ ] ({id}) {item.Title}\n"));
         }
     }
 }
