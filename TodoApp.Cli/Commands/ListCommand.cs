@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using System;
 using System.Threading.Tasks;
+using TodoApp.Cli.Repository;
 
 namespace TodoApp.Cli.Commands
 {
@@ -12,12 +13,46 @@ namespace TodoApp.Cli.Commands
 
         public async Task Run()
         {
-            var loader = new TodoJsonFileLoader();
-            var list = await loader.LoadFromFile(Source);
+            var repository = new TodoRepository();
 
-            Console.WriteLine($"Loaded {list.Tasks.Count} items from {Source}");
+            await repository.LoadItems(Source);
 
-            list.ShowAll();
+
+            var provideId = true;
+            while (provideId)
+            {
+                Console.WriteLine(repository.DisplayAllItems());
+                Console.WriteLine("Provide the ID of item which is completed");
+                var isNumber = false;
+                while (!isNumber)
+                {
+                    var input = Console.ReadLine();
+                    var id = 0;
+                    if (Int32.TryParse(input, out id))
+                    {
+                        id = Int32.Parse(input);
+                        repository.MarkCompleted(id);
+                        isNumber = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Provide a proper number");
+                    }
+                }
+                Console.WriteLine("Would you like to continue marking todos?(y/n)");
+                var answer = Console.ReadLine().ToLower();
+                if (answer != "y")
+                {
+                    provideId = false;
+                }
+            }
+
+            await repository.SaveItems(Source);
+
+
+            //Console.WriteLine($"Loaded {list.Tasks.Count} items from {Source}");
+
+            //list.ShowAll();
         }
     }
 }
