@@ -10,7 +10,7 @@ namespace TodoApp.Cli.Repository
     {
         private static int NEXT_ID = 0;
 
-        public IList<ITodo> Tasks { get; set; } = new List<ITodo>();
+        private IList<ITodo> Tasks { get; set; } = new List<ITodo>();
 
         public async Task LoadItems(string path)
         {
