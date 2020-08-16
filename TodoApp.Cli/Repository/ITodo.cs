@@ -11,6 +11,6 @@ namespace TodoApp.Cli.Repository
 
         void MarkCompleted(int id);
 
-        TodoItem GetTodoItem();
+        //TodoItem GetTodoItem();
     }
 }

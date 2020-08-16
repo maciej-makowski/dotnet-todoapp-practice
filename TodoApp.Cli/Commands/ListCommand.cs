@@ -13,9 +13,8 @@ namespace TodoApp.Cli.Commands
 
         public async Task Run()
         {
-            var repository = new TodoRepository();
+            var repository = new JsonRepository(Source);
 
-            await repository.LoadItems(Source);
 
 
             var provideId = true;

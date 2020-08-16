@@ -128,7 +128,7 @@ namespace TodoApp.Cli.Tests.Repository
             TodoList itemList = new TodoList();
             itemList.Tasks.Add(item);
 
-            TodoRepository repository = new TodoRepository();
+            JsonRepository repository = new JsonRepository();
 
             repository.AddTodos(itemList);
 
