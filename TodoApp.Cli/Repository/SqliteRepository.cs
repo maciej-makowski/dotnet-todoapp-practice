@@ -25,7 +25,7 @@ namespace TodoApp.Cli.Repository
                         var taskId = reader.GetInt64(reader.GetOrdinal("taskId"));
                         var instrtedAt = reader.GetDateTime(reader.GetOrdinal("insertedAt"));
                         var itemText = reader.GetString(reader.GetOrdinal("title"));
-                        
+
                         var name = reader.GetString(0);
 
                         Console.WriteLine($"Hello, {name}!");

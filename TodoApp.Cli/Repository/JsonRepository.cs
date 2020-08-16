@@ -16,7 +16,7 @@ namespace TodoApp.Cli.Repository
         {
             LoadItems(filePath).Wait();
         }
-            
+
         public async Task LoadItems(string path)
         {
             var loader = new TodoJsonFileLoader();
@@ -106,7 +106,7 @@ namespace TodoApp.Cli.Repository
         {
             var newTodo = new TodoItem();
 
-            if(item is SingleTodo)
+            if (item is SingleTodo)
             {
                 var singleTodo = (SingleTodo)item;
                 newTodo = new TodoItem()
