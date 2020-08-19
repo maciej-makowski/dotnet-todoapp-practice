@@ -8,7 +8,7 @@ namespace TodoApp.Cli.Repository
 {
     public class ListTodo : ITodo
     {
-        private int id;
+        public int Id { get; }
         public string Title { get; set; }
         public bool Completed { get; set; }
         public DateTime InsertedAt { get; set; }
@@ -16,7 +16,7 @@ namespace TodoApp.Cli.Repository
 
         public ListTodo(int id, string title, bool completed, DateTime insertedAt, IList<SingleTodo> subitems)
         {
-            this.id = id;
+            Id = id;
             Subitems = subitems;
             Title = title;
             Completed = completed;
@@ -25,7 +25,7 @@ namespace TodoApp.Cli.Repository
 
         public void MarkCompleted(int id)
         {
-            if (this.id == id)
+            if (Id == id)
             {
                 foreach (var subitem in Subitems)
                 {
@@ -53,7 +53,7 @@ namespace TodoApp.Cli.Repository
                 subitem.Display(sb);
             }
 
-            sb.Insert(startPosition, $"[{countCompleted}/{Subitems.Count}] ({this.id}) {Title}\n");
+            sb.Insert(startPosition, $"[{countCompleted}/{Subitems.Count}] ({Id}) {Title}\n");
         }
 
     }

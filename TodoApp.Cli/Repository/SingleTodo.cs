@@ -7,14 +7,14 @@ namespace TodoApp.Cli.Repository
 {
     public class SingleTodo : ITodo
     {
-        private int id;
+        public int Id { get; }
         public string Title { get; set; }
         public DateTime InsertedAt { get; set; }
         public bool Completed { get; set; }
 
         public SingleTodo(int id, string title, bool completed, DateTime insertedAt)
         {
-            this.id = id;
+            Id = id;
             Title = title;
             Completed = completed;
             InsertedAt = insertedAt;
@@ -22,12 +22,12 @@ namespace TodoApp.Cli.Repository
 
         public void MarkCompleted(int id)
         {
-            if (this.id == id) Completed = true;
+            if (Id == id) Completed = true;
         }
 
         public void Display(StringBuilder sb)
         {
-            sb.Append($"{(Completed ? "[x]" : "[ ]")} ({this.id}) {Title}\n");
+            sb.Append($"{(Completed ? "[x]" : "[ ]")} ({Id}) {Title}\n");
         }
     }
 }

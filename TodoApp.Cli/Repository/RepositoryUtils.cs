@@ -7,18 +7,23 @@ namespace TodoApp.Cli.Repository
 {
     public static class RepositoryUtils
     {
-        //public static ITodoRepository CreateRepository (string path)
-        //{
-        //    var file = new FileInfo(path);
-        //    switch (file.Extension)
-        //    {
-        //        case "db":
-        //            var repository = new SqliteRepository();
-        //            repository.LoadItems(path);
-        //        case "json":
-        //            // ...
-        //    }
-        //    throw new NotImplementedException("TODO");
-        //}
+        public static ITodoRepository CreateRepository(string path)
+        {
+            var file = new FileInfo(path);
+
+            if (file.ToString().Contains("db"))
+            {
+                var repository = new SqliteRepository(path);
+                return repository;
+            }else if (file.ToString().Contains("json"))
+            {
+                var repository = new JsonRepository(path);
+                return repository;
+            }
+            else
+            {
+                throw new NotImplementedException("TODO");
+            }            
+        }
     }
 }
