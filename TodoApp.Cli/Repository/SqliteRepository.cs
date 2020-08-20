@@ -81,27 +81,33 @@ namespace TodoApp.Cli.Repository
 
         public async Task SaveItems(string path)
         {
-
-
-                foreach (var task in Tasks)
+            foreach (var task in Tasks)
+            {
+                var parentId = 0;
+                if (task is SingleTodo)
                 {
-                    var parentId = 0;
-                    if(task is SingleTodo)
-                    {
-                        var todo = (SingleTodo)task;
-                        ExecuteQuery(CreateQuery(CreateFromTodo(todo, parentId)), path);
-                    }
-                    else
-                    {
-                        var todo = (ListTodo)task;
-                        ExecuteQuery(CreateQuery(CreateFromTodo(todo)), path);
-                        parentId = todo.Id;
-                        foreach (var subitem in todo.Subitems)
-                        {
-                            ExecuteQuery(CreateQuery(CreateFromTodo(subitem, parentId)), path);
-                        }
-                    }  
+                    var todo = (SingleTodo)task;
+                    SaveTodo(CreateFromTodo(todo, parentId));
                 }
+                else
+                {
+                    var todo = (ListTodo)task;
+                    SaveTodo(CreateFromTodo(todo));
+                    parentId = todo.Id;
+                    foreach (var subitem in todo.Subitems)
+                    {
+                        SaveTodo(CreateFromTodo(subitem, parentId));
+                    }
+                }
+            }
+            //var item = Tasks[0];
+            //if(item is SingleTodo)
+            //{
+            //    Console.WriteLine("IS SINGLE");
+            //    var todo = (SingleTodo)item;
+            //    SaveTodo(CreateFromTodo(todo, 0));
+            //}
+            //InsertAnItem(path);
         }
 
         public void MarkCompleted(int id)
@@ -123,57 +129,34 @@ namespace TodoApp.Cli.Repository
             return sb.ToString();
         }
 
-        private string CreateQuery(TodoSqlite todo)
+        private void SaveTodo(TodoSqlite todo)
         {
-            var itemType = 0;
-            if(todo.ItemType == TodoItemType.List)
+            using (var connection = SetConnection())
             {
-                itemType = 1;
-            }
-            var txtSqlQuery = $"REPLACE INTO tasks(taskId, insertedAt, title, completed, itemType, parentId) VALUES ({todo.Id}, {todo.InsertedAt}, {todo.ItemText}, {todo.Completed}, {itemType}, {todo.ParentId})";
-
-            return txtSqlQuery;
-        }
-
-        private async void ExecuteQuery(string txtQuery, string path)
-        {
-            using (var connection = SetConnection(path))
-            {
-                await connection.OpenAsync();
-
+                connection.Open();
                 var command = connection.CreateCommand();
-                command.CommandText = txtQuery;
+                var txtCommand = "INSERT or REPLACE into tasks (taskId, insertedAt, title, completed, itemType, parentId) VALUES ($taskId, $insertedAt, $title, $completed, $itemType, $parentId)";
+                var itemType = 0;
+                if(todo.ItemType == TodoItemType.List)
+                {
+                    itemType = 1;
+                }
+                Console.WriteLine(txtCommand);
+                command.CommandText = txtCommand;
+                command.Parameters.AddWithValue("$taskId", todo.Id);
+                command.Parameters.AddWithValue("$insertedAt", todo.InsertedAt);
+                command.Parameters.AddWithValue("$title", todo.ItemText);
+                command.Parameters.AddWithValue("$completed", todo.Completed);
+                command.Parameters.AddWithValue("$itemType", itemType);
+                command.Parameters.AddWithValue("$parentId", todo.ParentId);
                 command.ExecuteNonQuery();
-                await connection.CloseAsync();
+                connection.Close();
             }
         }
-
-        private SqliteConnection SetConnection(string path)
+        private SqliteConnection SetConnection(string path = "data/todo.db")
         {
             return new SqliteConnection($"Data Source={path}");
         }
-
-        //public void ConvertAllTasksToSql()
-        //{
-        //    foreach (var task in Tasks)
-        //    {
-        //        int parentId = 0;
-        //        if(task is SingleTodo)
-        //        {
-        //            var todo = (SingleTodo)task;
-        //            var todoSql = CreateFromTodo(todo, parentId);
-        //        }else if(task is ListTodo)
-        //        {
-        //            var todo = (ListTodo)task;
-        //            var todoSql = CreateFromTodo(todo);
-        //            parentId = todo.Id;
-        //            foreach (var subitem in todo.Subitems)
-        //            {
-        //                var subitemSql = CreateFromTodo(subitem, parentId);
-        //            }
-        //        }
-        //    }
-        //}
 
         private static TodoSqlite CreateFromTodo(ListTodo todo)
         {
@@ -200,14 +183,6 @@ namespace TodoApp.Cli.Repository
                 ParentId = parentId
             };
         }
-
-        public void CreateQuery(ITodo todo)
-        {
-            string txtSqlQuery = "Insert Into tasks (taskId, insertedAt, title, completed, itemType, parentId)";
-            
-        }
-
-
 
         private static ITodo CreateFromSqlite(TodoSqlite row)
         { 

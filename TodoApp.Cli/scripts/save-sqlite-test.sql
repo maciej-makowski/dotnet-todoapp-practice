@@ -1,0 +1,1 @@
+﻿INSERT INTO tasks (title, itemType) VALUES ('Hello there', 0);

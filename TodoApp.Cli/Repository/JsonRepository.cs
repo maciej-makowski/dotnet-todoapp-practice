@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Cli.Model.Json;
 using TodoApp.Cli.Model;
 
 namespace TodoApp.Cli.Repository

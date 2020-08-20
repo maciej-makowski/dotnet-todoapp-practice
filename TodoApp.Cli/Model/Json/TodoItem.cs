@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TodoApp.Cli.Model
+namespace TodoApp.Cli.Model.Json
 {
     public class TodoItem
     {

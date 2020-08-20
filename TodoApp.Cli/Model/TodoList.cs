@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TodoApp.Cli.Model.Json;
 
 namespace TodoApp.Cli.Model
 {
