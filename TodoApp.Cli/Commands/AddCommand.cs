@@ -16,7 +16,8 @@ namespace TodoApp.Cli.Commands
         public string Path { get; set; }
         public async Task Run()
         {
-            var repository = new JsonRepository(Path);
+            var repository = RepositoryUtils.CreateRepository(Path);
+
             var todoList = new TodoList();
             var askForTodo = true;
 
