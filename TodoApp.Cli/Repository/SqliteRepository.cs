@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
@@ -11,11 +12,13 @@ namespace TodoApp.Cli.Repository
 {
     public class SqliteRepository : ITodoRepository
     {
+        private static int NEXT_ID;
         private IList<ITodo> Tasks { get; set; } = new List<ITodo>();
 
         public SqliteRepository(string path)
         {
             LoadItems(path).Wait();
+            NEXT_ID = Tasks[Tasks.Count-1].Id;
         }
 
         public async Task LoadItems(string path)
@@ -128,6 +131,21 @@ namespace TodoApp.Cli.Repository
 
             return sb.ToString();
         }
+        public void AddNewItem(string title)
+        {
+            var task = new SingleTodo(NEXT_ID++, title, false, DateTime.Now);
+            Tasks.Add(task);
+        }
+        public void AddNewItem(string title, IList<string> subitems)
+        {
+            List<SingleTodo> items = new List<SingleTodo>();
+            var task = new ListTodo(NEXT_ID++, title, false, DateTime.Now, items);
+            foreach (var subitem in subitems)
+            {
+                task.Subitems.Add(new SingleTodo(NEXT_ID++, subitem, false, DateTime.Now));
+            }
+`           Tasks.Add(task)
+        }
 
         private void SaveTodo(TodoSqlite todo)
         {
@@ -136,14 +154,18 @@ namespace TodoApp.Cli.Repository
                 connection.Open();
                 var command = connection.CreateCommand();
                 var itemType = 0;
-                if (todo.ItemType == TodoItemType.List)
+                var replaceCommand = "";
+                if (todo.ItemType == TodoItemType.List) itemType = 1;
+                if(todo.ParentId == 0)
                 {
-                    itemType = 1;
+                    replaceCommand = $"REPLACE into tasks (taskId, title, insertedAt, completed, itemType) VALUES ({todo.Id},'{todo.ItemText}', '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', {todo.Completed}, {itemType})";
+                }
+                else
+                {
+                    replaceCommand = $"REPLACE into tasks (taskId, title, insertedAt, completed, itemType, parentId) VALUES ({todo.Id},'{todo.ItemText}', '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', {todo.Completed}, {itemType}, {todo.ParentId})";
                 }
                 var updateCommand = $"UPDATE tasks SET completed = {todo.Completed}, title = '{todo.ItemText}', insertedAt = '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', itemType = {itemType} WHERE taskId = {todo.Id}";
-                var replaceCommand = $"REPLACE into tasks (taskId, title, insertedAt, completed, itemType) VALUES ({todo.Id},'{todo.ItemText}', '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', {todo.Completed}, {itemType})";
-                //txtCommand += String.Format("VALUES ({0}, {1}, {2}, {3}, {4}) ", todo.InsertedAt, todo.ItemText, todo.Completed, itemType, todo.ParentId);
-                //txtCommand += "DO UPDATE SET completed=excluded.completed;";
+                //var replaceCommand = $"REPLACE into tasks (taskId, title, insertedAt, completed, itemType) VALUES ({todo.Id},'{todo.ItemText}', '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', {todo.Completed}, {itemType})";
 
 
                 Console.WriteLine(replaceCommand);
@@ -155,6 +177,16 @@ namespace TodoApp.Cli.Repository
         private SqliteConnection SetConnection(string path = "data/todo.db")
         {
             return new SqliteConnection($"Data Source={path}");
+        }
+
+        private int FindLastId()
+        {
+            var max = 0;
+            foreach (var task in Tasks)
+            {
+
+            }
+            return max;
         }
 
         private static TodoSqlite CreateFromTodo(ListTodo todo)
