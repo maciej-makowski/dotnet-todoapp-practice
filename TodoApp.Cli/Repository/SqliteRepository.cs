@@ -144,7 +144,7 @@ namespace TodoApp.Cli.Repository
             {
                 task.Subitems.Add(new SingleTodo(NEXT_ID++, subitem, false, DateTime.Now));
             }
-`           Tasks.Add(task)
+            Tasks.Add(task);
         }
 
         private void SaveTodo(TodoSqlite todo)
