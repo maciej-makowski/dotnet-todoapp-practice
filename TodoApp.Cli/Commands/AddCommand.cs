@@ -28,12 +28,12 @@ namespace TodoApp.Cli.Commands
                     var title = ProvideTitle();
                     subitemsAmount = ProvideAmount();
                     List<string> subitems = CreateListOfItems(subitemsAmount);
-                    repository.AddNewTodo(title, subitems);
+                    repository.AddNewItem(title, subitems);
 
                 }
                 else
                 {
-                    repository.AddNewTodo(ProvideTitle());
+                    repository.AddNewItem(ProvideTitle());
                 }
 
                 askForTodo = AskForRestart();

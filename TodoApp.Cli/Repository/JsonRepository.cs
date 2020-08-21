@@ -44,13 +44,13 @@ namespace TodoApp.Cli.Repository
             await loader.SaveToFile(path, todoList);
         }
 
-        public void AddNewTodo(string title)
+        public void AddNewItem(string title)
         {
             var task = new SingleTodo(NEXT_ID++, title, false, DateTime.Now);
             Tasks.Add(task);
         }
 
-        public void AddNewTodo(string title, IList<string> subitems)
+        public void AddNewItem(string title, IList<string> subitems)
         {
             List<SingleTodo> items = new List<SingleTodo>();
             var task = new ListTodo(NEXT_ID++, title, false, DateTime.Now, items);
