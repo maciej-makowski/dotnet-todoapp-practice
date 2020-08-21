@@ -13,6 +13,10 @@ namespace TodoApp.Cli.Repository
 
         void MarkCompleted(int id);
 
+        void AddNewItem(string title);
+
+        void AddNewItem(string title, IList<string> subitems);
+
         string DisplayAllItems();
     }
 }
