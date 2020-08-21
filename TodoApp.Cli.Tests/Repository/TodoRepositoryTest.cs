@@ -42,7 +42,7 @@ namespace TodoApp.Cli.Tests.Repository
         [Test]
         public void ShouldDisplayListIncompleteItemCorrectly()
         {
-            
+
             var id = 0;
             var sb = new StringBuilder();
             List<SingleTodo> items = new List<SingleTodo>();
@@ -90,7 +90,7 @@ namespace TodoApp.Cli.Tests.Repository
             var repository = RepositoryUtils.CreateRepository(path);
             repository.AddNewItem(title);
             var output = repository.DisplayAllItems();
-            
+
 
             Assert.That(output, Is.EqualTo($"[ ] ({id}) {title}\n"));
         }
