@@ -18,7 +18,7 @@ namespace TodoApp.Cli.Repository
         public SqliteRepository(string path)
         {
             LoadItems(path).Wait();
-            NEXT_ID = Tasks[Tasks.Count-1].Id;
+            NEXT_ID = Tasks[Tasks.Count - 1].Id;
         }
 
         public async Task LoadItems(string path)
@@ -156,7 +156,7 @@ namespace TodoApp.Cli.Repository
                 var itemType = 0;
                 var replaceCommand = "";
                 if (todo.ItemType == TodoItemType.List) itemType = 1;
-                if(todo.ParentId == 0)
+                if (todo.ParentId == 0)
                 {
                     replaceCommand = $"REPLACE into tasks (taskId, title, insertedAt, completed, itemType) VALUES ({todo.Id},'{todo.ItemText}', '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', {todo.Completed}, {itemType})";
                 }
