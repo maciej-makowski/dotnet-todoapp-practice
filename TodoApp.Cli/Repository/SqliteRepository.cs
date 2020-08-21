@@ -50,7 +50,7 @@ namespace TodoApp.Cli.Repository
                             InsertedAt = instrtedAt,
                             ItemText = itemText,
                             Completed = completed,
-                            ItemType = (TodoItemType) itemType,
+                            ItemType = (TodoItemType)itemType,
                             ParentId = parentId
                         };
 
@@ -60,19 +60,19 @@ namespace TodoApp.Cli.Repository
                         }
                         else
                         {
-                            foreach(var todo in Tasks)
+                            foreach (var todo in Tasks)
                             {
-                                if(todo is ListTodo)
+                                if (todo is ListTodo)
                                 {
                                     var list = (ListTodo)todo;
-                                    if(list.Id == parentId)
+                                    if (list.Id == parentId)
                                     {
                                         list.Subitems.Add((SingleTodo)CreateFromSqlite(row));
                                     }
                                 }
                             }
                         }
-                        
+
                         Console.WriteLine($"{taskId} : {instrtedAt} : {itemText} : {completed} : {itemType} : {parentId}");
                     }
                 }
@@ -135,20 +135,19 @@ namespace TodoApp.Cli.Repository
             {
                 connection.Open();
                 var command = connection.CreateCommand();
-                var txtCommand = "INSERT or REPLACE into tasks (taskId, insertedAt, title, completed, itemType, parentId) VALUES ($taskId, $insertedAt, $title, $completed, $itemType, $parentId)";
                 var itemType = 0;
-                if(todo.ItemType == TodoItemType.List)
+                if (todo.ItemType == TodoItemType.List)
                 {
                     itemType = 1;
                 }
-                Console.WriteLine(txtCommand);
-                command.CommandText = txtCommand;
-                command.Parameters.AddWithValue("$taskId", todo.Id);
-                command.Parameters.AddWithValue("$insertedAt", todo.InsertedAt);
-                command.Parameters.AddWithValue("$title", todo.ItemText);
-                command.Parameters.AddWithValue("$completed", todo.Completed);
-                command.Parameters.AddWithValue("$itemType", itemType);
-                command.Parameters.AddWithValue("$parentId", todo.ParentId);
+                var updateCommand = $"UPDATE tasks SET completed = {todo.Completed}, title = '{todo.ItemText}', insertedAt = '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', itemType = {itemType} WHERE taskId = {todo.Id}";
+                var replaceCommand = $"REPLACE into tasks (taskId, title, insertedAt, completed, itemType) VALUES ({todo.Id},'{todo.ItemText}', '{todo.InsertedAt.ToString("yyyy-MM-dd HH:mm:ss")}', {todo.Completed}, {itemType})";
+                //txtCommand += String.Format("VALUES ({0}, {1}, {2}, {3}, {4}) ", todo.InsertedAt, todo.ItemText, todo.Completed, itemType, todo.ParentId);
+                //txtCommand += "DO UPDATE SET completed=excluded.completed;";
+
+
+                Console.WriteLine(replaceCommand);
+                command.CommandText = replaceCommand;
                 command.ExecuteNonQuery();
                 connection.Close();
             }
@@ -185,7 +184,7 @@ namespace TodoApp.Cli.Repository
         }
 
         private static ITodo CreateFromSqlite(TodoSqlite row)
-        { 
+        {
             switch (row.ItemType)
             {
                 case TodoItemType.Single:

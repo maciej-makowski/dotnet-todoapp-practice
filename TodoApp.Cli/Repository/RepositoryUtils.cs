@@ -15,7 +15,8 @@ namespace TodoApp.Cli.Repository
             {
                 var repository = new SqliteRepository(path);
                 return repository;
-            }else if (file.ToString().Contains("json"))
+            }
+            else if (file.ToString().Contains("json"))
             {
                 var repository = new JsonRepository(path);
                 return repository;
@@ -23,7 +24,7 @@ namespace TodoApp.Cli.Repository
             else
             {
                 throw new NotImplementedException("TODO");
-            }            
+            }
         }
     }
 }
