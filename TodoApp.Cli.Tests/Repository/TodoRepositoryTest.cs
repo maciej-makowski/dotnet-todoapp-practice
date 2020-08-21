@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 using TodoApp.Cli.Model;
+using TodoApp.Cli.Model.Json;
 using TodoApp.Cli.Repository;
 
 namespace TodoApp.Cli.Tests.Repository
@@ -13,128 +14,85 @@ namespace TodoApp.Cli.Tests.Repository
         [Test]
         public void ShouldDisplaySingleIncompleteItemCorrectly()
         {
+            var id = 0;
             var sb = new StringBuilder();
-            var todo = new TodoItem()
-            {
-                ItemType = TodoItemType.Single,
-                Title = "Test Item",
-                Completed = false
-            };
-            var item = new SingleTodo(todo, 0);
+            var item = new SingleTodo(id, "Test Item", false, DateTime.Now);
 
             item.Display(sb);
 
             var output = sb.ToString();
 
-            Assert.That(output, Is.EqualTo($"[ ] (0) Test Item\n"));
+            Assert.That(output, Is.EqualTo($"[ ] ({id}) {item.Title}\n"));
         }
 
         [Test]
         public void ShouldDisplaySingleCompleteItemCorrectly()
         {
-            var sb = new StringBuilder();
             var id = 0;
-            var todo = new TodoItem()
-            {
-                ItemType = TodoItemType.Single,
-                Title = "Test Item",
-                Completed = true
-            };
-            var item = new SingleTodo(todo, id);
+            var sb = new StringBuilder();
+            var item = new SingleTodo(id, "Test Item", true, DateTime.Now);
 
             item.Display(sb);
 
             var output = sb.ToString();
 
-            Assert.That(output, Is.EqualTo($"[x] ({id}) {todo.Title}\n"));
+            Assert.That(output, Is.EqualTo($"[x] ({id}) {item.Title}\n"));
         }
 
         [Test]
         public void ShouldDisplayListIncompleteItemCorrectly()
         {
-            var sb = new StringBuilder();
+            
             var id = 0;
-            var todo = new TodoItem()
-            {
-                ItemType = TodoItemType.List,
-                Title = "Test Item",
-                Completed = false,
-                Items = new List<TodoItem> { new TodoItem()
-                {
-                    ItemType = TodoItemType.Single,
-                    Title = "Subitem",
-                    Completed = false
-                } }
-            };
-
-            var item = new SingleTodo(todo.Items[0], id++);
+            var sb = new StringBuilder();
             List<SingleTodo> items = new List<SingleTodo>();
-            items.Add(item);
+            var item = new ListTodo(id, "Test List", false, DateTime.Now, items);
+            var subitem = new SingleTodo(id++, "Test Subitem", false, DateTime.Now);
 
-            var listItem = new ListTodo(todo, items, id++);
+            item.Subitems.Add(subitem);
 
-            listItem.Display(sb);
+            item.Display(sb);
 
             var output = sb.ToString();
 
             Assert.That(output, Is.EqualTo(
-                $"[0/1] ({--id}) {todo.Title}\n" +
-                $" -- [ ] ({--id}) {todo.Items[0].Title}\n"));
+                $"[0/1] ({item.Id}) {item.Title}\n" +
+                $" -- [ ] ({subitem.Id}) {subitem.Title}\n"));
         }
 
         [Test]
         public void ShouldDisplayListCompleteItemCorrectly()
         {
-            var sb = new StringBuilder();
             var id = 0;
-            var todo = new TodoItem()
-            {
-                ItemType = TodoItemType.List,
-                Title = "Test Item",
-                Completed = false,
-                Items = new List<TodoItem> { new TodoItem()
-                {
-                    ItemType = TodoItemType.Single,
-                    Title = "Subitem",
-                    Completed = true
-                } }
-            };
-
-            var item = new SingleTodo(todo.Items[0], id++);
+            var sb = new StringBuilder();
             List<SingleTodo> items = new List<SingleTodo>();
-            items.Add(item);
+            var item = new ListTodo(id, "Test List", false, DateTime.Now, items);
+            var subitem = new SingleTodo(id++, "Test Subitem", true, DateTime.Now);
 
-            var listItem = new ListTodo(todo, items, id++);
+            item.Subitems.Add(subitem);
 
-            listItem.Display(sb);
+            item.Display(sb);
 
             var output = sb.ToString();
 
             Assert.That(output, Is.EqualTo(
-                $"[1/1] ({--id}) {todo.Title}\n" +
-                $" -- [x] ({--id}) {todo.Items[0].Title}\n"));
+                $"[1/1] ({item.Id}) {item.Title}\n" +
+                $" -- [x] ({subitem.Id}) {subitem.Title}\n"));
         }
 
         [Test]
         public void ShouldAddSingleItem()
         {
+            var path = "D:/Repos/todos/dotnet-todoapp-practice/TodoApp.Cli.Tests/data/add-test.json";
             var id = 0;
-            TodoItem item = new TodoItem()
-            {
-                ItemType = TodoItemType.Single,
-                Title = "Single item",
-                Completed = false
-            };
-            TodoList itemList = new TodoList();
-            itemList.Tasks.Add(item);
+            var title = "Test Single";
 
-            JsonRepository repository = new JsonRepository();
-
-            repository.AddTodos(itemList);
-
+            var repository = RepositoryUtils.CreateRepository(path);
+            repository.AddNewItem(title);
             var output = repository.DisplayAllItems();
+            
 
-            Assert.That(output, Is.EqualTo($"[ ] ({id}) {item.Title}\n"));
+            Assert.That(output, Is.EqualTo($"[ ] ({id}) {title}\n"));
         }
     }
 }
