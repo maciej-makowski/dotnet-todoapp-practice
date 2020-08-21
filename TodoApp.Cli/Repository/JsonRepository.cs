@@ -46,20 +46,19 @@ namespace TodoApp.Cli.Repository
 
         public void AddNewTodo(string title)
         {
-            var todo = new SingleTodo(NEXT_ID++, title, false, DateTime.Now);
-            Tasks.Add(todo);
+            var task = new SingleTodo(NEXT_ID++, title, false, DateTime.Now);
+            Tasks.Add(task);
         }
 
         public void AddNewTodo(string title, IList<string> subitems)
         {
             List<SingleTodo> items = new List<SingleTodo>();
+            var task = new ListTodo(NEXT_ID++, title, false, DateTime.Now, items);
             foreach (var subitem in subitems)
             {
-                var newSubitem = new SingleTodo(NEXT_ID++, subitem, false, DateTime.Now);
-                items.Add(newSubitem);
+                task.Subitems.Add(new SingleTodo(NEXT_ID++, subitem, false, DateTime.Now));
             }
-            var listTodo = new ListTodo(NEXT_ID++, title, false, DateTime.Now, items);
-            Tasks.Add(listTodo);
+            Tasks.Add(task);
         }
 
         public void MarkCompleted(int id)
