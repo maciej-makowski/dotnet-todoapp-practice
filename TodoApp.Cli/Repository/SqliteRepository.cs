@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
+using System.Xml;
 using TodoApp.Cli.Model;
 using TodoApp.Cli.Model.Sqlite;
 
@@ -18,7 +20,9 @@ namespace TodoApp.Cli.Repository
         public SqliteRepository(string path)
         {
             LoadItems(path).Wait();
+
             NEXT_ID = Tasks[Tasks.Count - 1].Id;
+            Console.WriteLine(NEXT_ID);
         }
 
         public async Task LoadItems(string path)
@@ -90,16 +94,16 @@ namespace TodoApp.Cli.Repository
                 if (task is SingleTodo)
                 {
                     var todo = (SingleTodo)task;
-                    SaveTodo(CreateFromTodo(todo, parentId));
+                    await SaveTodo(CreateFromTodo(todo, parentId));
                 }
                 else
                 {
                     var todo = (ListTodo)task;
-                    SaveTodo(CreateFromTodo(todo));
+                    await SaveTodo(CreateFromTodo(todo));
                     parentId = todo.Id;
                     foreach (var subitem in todo.Subitems)
                     {
-                        SaveTodo(CreateFromTodo(subitem, parentId));
+                        await SaveTodo(CreateFromTodo(subitem, parentId));
                     }
                 }
             }
@@ -147,11 +151,11 @@ namespace TodoApp.Cli.Repository
             Tasks.Add(task);
         }
 
-        private void SaveTodo(TodoSqlite todo)
+        private async Task SaveTodo(TodoSqlite todo)
         {
             using (var connection = SetConnection())
             {
-                connection.Open();
+                connection.OpenAsync();
                 var command = connection.CreateCommand();
                 var itemType = 0;
                 var replaceCommand = "";
@@ -171,7 +175,6 @@ namespace TodoApp.Cli.Repository
                 Console.WriteLine(replaceCommand);
                 command.CommandText = replaceCommand;
                 command.ExecuteNonQuery();
-                connection.Close();
             }
         }
         private SqliteConnection SetConnection(string path = "data/todo.db")
