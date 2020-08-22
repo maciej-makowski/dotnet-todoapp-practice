@@ -155,7 +155,7 @@ namespace TodoApp.Cli.Repository
         {
             using (var connection = SetConnection())
             {
-                connection.OpenAsync();
+                await connection.OpenAsync();
                 var command = connection.CreateCommand();
                 var itemType = 0;
                 var replaceCommand = "";
