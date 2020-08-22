@@ -7,33 +7,27 @@ namespace TodoApp.Cli.Repository
 {
     public class SingleTodo : ITodo
     {
-        private int id;
-        private TodoItem todo;
-        public bool Completed
-        {
-            get { return this.todo.Completed; }
-            set { this.todo.Completed = value; }
-        }
+        public int Id { get; }
+        public string Title { get; set; }
+        public DateTime InsertedAt { get; set; }
+        public bool Completed { get; set; }
 
-        public SingleTodo(TodoItem todo, int id)
+        public SingleTodo(int id, string title, bool completed, DateTime insertedAt)
         {
-            this.todo = todo;
-            this.id = id;
-        }
-
-        public TodoItem GetTodoItem()
-        {
-            return this.todo;
+            Id = id;
+            Title = title;
+            Completed = completed;
+            InsertedAt = insertedAt;
         }
 
         public void MarkCompleted(int id)
         {
-            if (this.id == id) todo.Completed = true;
+            if (Id == id) Completed = true;
         }
 
         public void Display(StringBuilder sb)
         {
-            sb.Append($"{(todo.Completed ? "[x]" : "[ ]")} ({this.id}) {todo.Title}\n");
+            sb.Append($"{(Completed ? "[x]" : "[ ]")} ({Id}) {Title}\n");
         }
     }
 }

@@ -13,15 +13,17 @@ namespace TodoApp.Cli.Commands
 
         public async Task Run()
         {
-            var repository = new TodoRepository();
 
-            await repository.LoadItems(Source);
+            var rep = RepositoryUtils.CreateRepository(Source);
+
+            var todosDisplayed = rep.DisplayAllItems();
+
+            Console.WriteLine(todosDisplayed);
 
 
             var provideId = true;
             while (provideId)
             {
-                Console.WriteLine(repository.DisplayAllItems());
                 Console.WriteLine("Provide the ID of item which is completed");
                 var isNumber = false;
                 while (!isNumber)
@@ -31,7 +33,7 @@ namespace TodoApp.Cli.Commands
                     if (Int32.TryParse(input, out id))
                     {
                         id = Int32.Parse(input);
-                        repository.MarkCompleted(id);
+                        rep.MarkCompleted(id);
                         isNumber = true;
                     }
                     else
@@ -39,6 +41,7 @@ namespace TodoApp.Cli.Commands
                         Console.WriteLine("Provide a proper number");
                     }
                 }
+                Console.WriteLine(rep.DisplayAllItems());
                 Console.WriteLine("Would you like to continue marking todos?(y/n)");
                 var answer = Console.ReadLine().ToLower();
                 if (answer != "y")
@@ -47,7 +50,7 @@ namespace TodoApp.Cli.Commands
                 }
             }
 
-            await repository.SaveItems(Source);
+            await rep.SaveItems(Source);
 
 
             //Console.WriteLine($"Loaded {list.Tasks.Count} items from {Source}");

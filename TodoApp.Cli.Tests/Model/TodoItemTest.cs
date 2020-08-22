@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using TodoApp.Cli.Model.Json;
 using TodoApp.Cli.Model;
 
 namespace TodoApp.Cli.Tests.Model
