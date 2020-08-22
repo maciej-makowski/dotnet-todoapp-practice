@@ -83,7 +83,7 @@ namespace TodoApp.Cli.Tests.Repository
         [Test]
         public void ShouldAddSingleItem()
         {
-            var path = "D:/Repos/todos/dotnet-todoapp-practice/TodoApp.Cli.Tests/data/add-test.json";
+            var path = "../../../data/add-test.json";
             var id = 0;
             var title = "Test Single";
 
